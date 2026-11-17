@@ -1,0 +1,11 @@
+{
+  "name": "sahayak-ai-platform",
+  "version": "1.0.0",
+  "description": "Sahayak AI - AI-Powered Unified Platform for Social Service and NGO Collaboration (MCA Final Year Project - Phase 1)",
+  "scripts": {
+    "seed": "npm run seed --prefix server",
+    "server": "npm start --prefix server",
+    "client": "npm run dev --prefix client",
+    "ai": "cd ai_service && python3 main.py"
+  }
+}

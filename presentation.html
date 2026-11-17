@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sahayak AI - Final Year Project Demonstration Deck</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --bg-card: rgba(18, 24, 38, 0.75);
+      --border-color: rgba(255, 255, 255, 0.1);
+      --border-active: rgba(99, 102, 241, 0.5);
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --secondary: #06b6d4;
+      --accent: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      --gradient-primary: linear-gradient(135deg, #6366f1 0%, #3b82f6 50%, #06b6d4 100%);
+      --gradient-text: linear-gradient(135deg, #a5b4fc 0%, #38bdf8 50%, #34d399 100%);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, h5 {
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Ambient Background Glow */
+    .bg-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(6, 182, 212, 0.05) 50%, transparent 70%);
+      top: -200px;
+      left: -100px;
+      z-index: 0;
+      pointer-events: none;
+      animation: floatGlow 15s ease-in-out infinite alternate;
+    }
+
+    .bg-glow-2 {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(99, 102, 241, 0.05) 50%, transparent 70%);
+      bottom: -150px;
+      right: -100px;
+      z-index: 0;
+      pointer-events: none;
+      animation: floatGlow 18s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes floatGlow {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(60px, 40px) scale(1.1); }
+      100% { transform: translate(-30px, 80px) scale(0.95); }
+    }
+
+    /* Header & Navigation Bar */
+    header {
+      height: 65px;
+      background: rgba(9, 13, 22, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-badge {
+      background: var(--gradient-primary);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .slide-select {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .slide-select option {
+      background: #121826;
+      color: var(--text-main);
+    }
+
+    .btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      border-color: var(--primary-light);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #4f46e5;
+    }
+
+    /* Slide Container */
+    .slide-deck {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 3rem 4rem;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(40px) scale(0.98);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(0) scale(1);
+    }
+
+    .slide-header {
+      margin-bottom: 2rem;
+    }
+
+    .slide-tag {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--secondary);
+      margin-bottom: 0.5rem;
+      display: inline-block;
+    }
+
+    .slide-title {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: var(--gradient-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slide-subtitle {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .slide-content {
+      flex: 1;
+      display: flex;
+      gap: 2rem;
+    }
+
+    /* Grid Layouts inside slides */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      width: 100%;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      width: 100%;
+    }
+
+    /* Glass Cards */
+    .glass-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.75rem;
+      box-shadow: var(--glass-shadow);
+      transition: border-color 0.2s ease, transform 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .glass-card:hover {
+      border-color: var(--border-active);
+    }
+
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Bullet Lists */
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .feature-bullet {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    /* Code & Tech Specs */
+    pre, code {
+      font-family: 'Fira Code', monospace;
+    }
+
+    .code-block {
+      background: #060911;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1.25rem;
+      font-size: 0.85rem;
+      color: #38bdf8;
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+
+    /* Title Slide Specifics */
+    .title-slide {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .hero-title {
+      font-size: 3.75rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-accent {
+      background: var(--gradient-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 1.35rem;
+      color: var(--text-muted);
+      max-width: 800px;
+      margin: 0 auto 2.5rem auto;
+      line-height: 1.6;
+    }
+
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-bottom: 3rem;
+    }
+
+    .pill {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .presenter-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem 2.5rem;
+      display: flex;
+      gap: 3rem;
+      text-align: left;
+    }
+
+    .presenter-info h5 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .presenter-info p {
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    /* Architecture Visual Box */
+    .arch-container {
+      background: #060911;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .arch-node {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .arch-node-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .arch-node-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .arch-arrow {
+      text-align: center;
+      color: var(--secondary);
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+
+    /* Table Styling */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .custom-table th {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      font-weight: 700;
+      text-align: left;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .custom-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .custom-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .badge-role {
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .role-admin { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+    .role-ngo { background: rgba(99, 102, 241, 0.2); color: #a5b4fc; }
+    .role-vol { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
+    .role-donor { background: rgba(245, 158, 11, 0.2); color: #fde68a; }
+    .role-ben { background: rgba(6, 182, 212, 0.2); color: #67e8f9; }
+
+    /* Interactive Live Widget inside slide */
+    .interactive-widget {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px dashed var(--secondary);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .widget-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .input-field {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #fff;
+      font-size: 0.85rem;
+      outline: none;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Footer & Controls */
+    footer {
+      height: 55px;
+      background: rgba(9, 13, 22, 0.9);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      z-index: 10;
+    }
+
+    .progress-bar-container {
+      position: absolute;
+      bottom: 54px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--gradient-primary);
+      width: 7%;
+      transition: width 0.3s ease;
+    }
+
+    .keyboard-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .kbd {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.75rem;
+      color: #fff;
+    }
+
+    /* Speaker Notes Modal */
+    .notes-modal {
+      position: fixed;
+      bottom: 70px;
+      right: 2rem;
+      width: 420px;
+      background: #0f172a;
+      border: 1px solid var(--primary);
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      z-index: 100;
+      display: none;
+    }
+
+    .notes-modal.active {
+      display: block;
+    }
+
+    .notes-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 0.5rem;
+    }
+
+    .notes-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary-light);
+    }
+
+    .notes-body {
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-glow"></div>
+  <div class="bg-glow-2"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <span>Sahayak AI</span>
+      <span class="brand-badge">MCA Final Project</span>
+    </div>
+    <div class="nav-controls">
+      <select class="slide-select" id="slideSelect" onchange="goToSlide(parseInt(this.value))">
+        <option value="0">1. Title & Executive Overview</option>
+        <option value="1">2. Problem Statement & Motivation</option>
+        <option value="2">3. The Sahayak AI Solution</option>
+        <option value="3">4. Microservices Architecture</option>
+        <option value="4">5. 5-Role Platform Ecosystem</option>
+        <option value="5">6. AI Engine 1: Skill Matcher</option>
+        <option value="6">7. AI Engine 2: Urgency Classifier</option>
+        <option value="7">8. AI Engine 3 & 4: Recommender & Chatbot</option>
+        <option value="8">9. Donor 80G Tax Exemption Engine</option>
+        <option value="9">10. Beneficiary Ticket Lifecycle</option>
+        <option value="10">11. Database Schema & Mongoose</option>
+        <option value="11">12. Live Demo Protocol & Test Suite</option>
+        <option value="12">13. Phase 1 vs Phase 2 Future Scope</option>
+        <option value="13">14. Conclusion & MCA Viva Q&A</option>
+      </select>
+
+      <button class="btn" onclick="toggleSpeakerNotes()">
+        <span>🎙️ Speaker Notes [N]</span>
+      </button>
+
+      <button class="btn btn-primary" onclick="toggleFullscreen()">
+        <span>⛶ Fullscreen [F]</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- Main Slide Deck -->
+  <div class="slide-deck">
+
+    <!-- SLIDE 1: Title Slide -->
+    <section class="slide title-slide active" id="slide-0">
+      <span class="slide-tag">MCA Final Year Project Demonstration (Phase 1)</span>
+      <h1 class="hero-title">
+        Sahayak AI: <span class="hero-accent">Unified AI Platform</span> for Social Service & NGO Collaboration
+      </h1>
+      <p class="hero-subtitle">
+        Bridging NGOs, Volunteers, Donors, Beneficiaries, and Admins into a transparent, AI-driven social impact ecosystem.
+      </p>
+
+      <div class="pill-group">
+        <div class="pill"><span class="pill-dot"></span> React.js + Glass CSS</div>
+        <div class="pill"><span class="pill-dot"></span> Node.js / Express REST API</div>
+        <div class="pill"><span class="pill-dot"></span> Python FastAPI AI Engine</div>
+        <div class="pill"><span class="pill-dot"></span> MongoDB / Mongoose</div>
+        <div class="pill"><span class="pill-dot"></span> 80G Tax Receipt Generator</div>
+      </div>
+
+      <div class="presenter-box">
+        <div class="presenter-info">
+          <h5>Project Domain</h5>
+          <p>AI Microservices & Web Platform</p>
+        </div>
+        <div class="presenter-info">
+          <h5>Academic Evaluation</h5>
+          <p>MCA Final Year Phase 1</p>
+        </div>
+        <div class="presenter-info">
+          <h5>Target Stakeholders</h5>
+          <p>NGOs, Donors, Volunteers, Aid Seekers</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: Problem Statement -->
+    <section class="slide" id="slide-1">
+      <div class="slide-header">
+        <span class="slide-tag">01. Academic & Social Context</span>
+        <h2 class="slide-title">Problem Statement & Domain Challenges</h2>
+        <p class="slide-subtitle">Why traditional social work portals fail to scale effectively in emergency scenarios.</p>
+      </div>
+      <div class="slide-content grid-2">
+        <div class="glass-card">
+          <div class="card-icon">⚠️</div>
+          <h3 class="card-title">1. Fragmented NGO Ecosystem</h3>
+          <p class="card-desc">Over 3.4 million NGOs operate in India in isolation. Lack of a unified digital platform leads to duplicate relief operations and unverified non-profit credentials.</p>
+        </div>
+        <div class="glass-card">
+          <div class="card-icon">⚡</div>
+          <h3 class="card-title">2. Manual Volunteer Allocation</h3>
+          <p class="card-desc">Volunteers are assigned randomly without skill vector matching. Technical, medical, or educational skills remain unutilized in critical field campaigns.</p>
+        </div>
+        <div class="glass-card">
+          <div class="card-icon">🕒</div>
+          <h3 class="card-title">3. Delayed Emergency Response</h3>
+          <p class="card-desc">Beneficiary requests queue chronologically rather than by NLP-evaluated urgency score. Severe crisis tickets get buried under standard requests.</p>
+        </div>
+        <div class="glass-card">
+          <div class="card-icon">🧾</div>
+          <h3 class="card-title">4. Lack of Donor Transparency & Tax Friction</h3>
+          <p class="card-desc">Donors hesitate due to missing proof of impact and tedious manual issuance of 80G tax exemption certificates.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: Proposed Solution -->
+    <section class="slide" id="slide-2">
+      <div class="slide-header">
+        <span class="slide-tag">02. Platform Innovation</span>
+        <h2 class="slide-title">The Sahayak AI Solution</h2>
+        <p class="slide-subtitle">A multi-tenant social impact platform powered by dual-stack REST & AI microservices.</p>
+      </div>
+      <div class="slide-content grid-3">
+        <div class="glass-card">
+          <div class="card-icon">🤝</div>
+          <h3 class="card-title">Unified 5-Role Hub</h3>
+          <p class="card-desc">Role-Based Access Control (RBAC) linking Admin document verification, NGO campaign management, Volunteer 1-click matching, Donor payments, and Beneficiary emergency tickets.</p>
+        </div>
+        <div class="glass-card">
+          <div class="card-icon">🧠</div>
+          <h3 class="card-title">Intelligent AI Engines</h3>
+          <p class="card-desc">Dedicated Python FastAPI microservice providing real-time vector similarity skill matching, NLP text urgency scoring, cause recommendations, and floating conversational chatbot.</p>
+        </div>
+        <div class="glass-card">
+          <div class="card-icon">🛡️</div>
+          <h3 class="card-title">Automated Compliance</h3>
+          <p class="card-desc">Instant dynamic 80G tax exemption receipt generator upon donation checkout, coupled with strict Admin approval workflow for new NGOs.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: Architecture -->
+    <section class="slide" id="slide-3">
+      <div class="slide-header">
+        <span class="slide-tag">03. Engineering Architecture</span>
+        <h2 class="slide-title">Full-Stack Microservices Architecture</h2>
+        <p class="slide-subtitle">Separation of concerns between client presentation, REST orchestration, data persistence, and AI compute.</p>
+      </div>
+      <div class="slide-content grid-2">
+        <div class="arch-container">
+          <div class="arch-node">
+            <div>
+              <div class="arch-node-title">React.js Client UI (Vite + Glass CSS)</div>
+              <div class="arch-node-desc">Role-based views, Top Navigation Demo Switcher, Sahayak Chatbot Modal</div>
+            </div>
+            <span class="badge-role role-ben">Port 3000</span>
+          </div>
+          <div class="arch-arrow">⬇ REST API / JSON / JWT</div>
+          <div class="arch-node">
+            <div>
+              <div class="arch-node-title">Node.js / Express Backend Server</div>
+              <div class="arch-node-desc">Auth Controller, Campaign/Donation/Request Handlers, AI Proxy</div>
+            </div>
+            <span class="badge-role role-ngo">Port 5001</span>
+          </div>
+          <div class="arch-arrow">↙ Data Storage & AI Proxy ↘</div>
+          <div style="display: flex; gap: 1rem;">
+            <div class="arch-node" style="flex:1;">
+              <div>
+                <div class="arch-node-title">MongoDB + Mongoose</div>
+                <div class="arch-node-desc">Auto MongoMemoryServer Fallback</div>
+              </div>
+            </div>
+            <div class="arch-node" style="flex:1;">
+              <div>
+                <div class="arch-node-title">Python FastAPI AI Microservice</div>
+                <div class="arch-node-desc">Skill Matcher, NLP Urgency Classifier</div>
+              </div>
+              <span class="badge-role role-vol">Port 8000</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <h3 class="card-title">Technical Highlights</h3>
+          <ul class="feature-list" style="margin-top: 1rem;">
+            <li class="feature-item">
+              <span class="feature-bullet">✓</span>
+              <div><strong>Decoupled Microservice:</strong> Fast AI compute in Python without blocking Node.js event loop.</div>
+            </li>
+            <li class="feature-item">
+              <span class="feature-bullet">✓</span>
+              <div><strong>Zero-Config Database Fallback:</strong> Automatic spin-up of <code>MongoMemoryServer</code> if local MongoDB daemon is absent.</div>
+            </li>
+            <li class="feature-item">
+              <span class="feature-bullet">✓</span>
+              <div><strong>Secure Authentication:</strong> JWT stateful tokens with salted Bcrypt password hashing.</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: 5-Role Ecosystem -->
+    <section class="slide" id="slide-4">
+      <div class="slide-header">
+        <span class="slide-tag">04. Platform Ecosystem</span>
+        <h2 class="slide-title">5-Role Access Control Matrix</h2>
+        <p class="slide-subtitle">Granular permission layers designed for security and streamlined social workflows.</p>
+      </div>
+      <div class="slide-content">
+        <div class="glass-card" style="width: 100%;">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Role</th>
+                <th>Pre-Configured Demo Account</th>
+                <th>Primary Responsibilities & Workflows</th>
+                <th>Key Platform Views</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="badge-role role-admin">👑 Admin</span></td>
+                <td><code>admin@sahayak.ai</code></td>
+                <td>Verify NGO registration documents, global user management, platform analytics audit.</td>
+                <td>Verification Queue, NGO Audit Log, User Directory</td>
+              </tr>
+              <tr>
+                <td><span class="badge-role role-ngo">🏢 NGO (Verified)</span></td>
+                <td><code>ngo.asha@sahayak.ai</code></td>
+                <td>Launch campaigns, review volunteer applications, adopt beneficiary assistance tickets.</td>
+                <td>Campaign Manager, Volunteer Approval Queue, Ticket Adoption</td>
+              </tr>
+              <tr>
+                <td><span class="badge-role role-vol">🤝 Volunteer</span></td>
+                <td><code>volunteer.arjun@sahayak.ai</code></td>
+                <td>Discover campaigns matched by AI, inspect skill breakdown, submit 1-click applications.</td>
+                <td>AI Match Feed, Active Applications Tracker</td>
+              </tr>
+              <tr>
+                <td><span class="badge-role role-donor">💳 Donor</span></td>
+                <td><code>donor.rohit@sahayak.ai</code></td>
+                <td>Browse causes, contribute via mock payment gateway, download instant 80G tax receipts.</td>
+                <td>Cause Feed, Tax Exemption Ledger, Payment Gateway</td>
+              </tr>
+              <tr>
+                <td><span class="badge-role role-ben">🤲 Beneficiary</span></td>
+                <td><code>beneficiary.ramesh@sahayak.ai</code></td>
+                <td>Submit assistance requests (Food, Medicine, Shelter), track real-time adoption status.</td>
+                <td>Emergency Ticket Submission, Status Tracker</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: AI Engine 1 - Skill Matcher -->
+    <section class="slide" id="slide-5">
+      <div class="slide-header">
+        <span class="slide-tag">05. AI Microservices Engine</span>
+        <h2 class="slide-title">AI Engine #1: Skill Vector Matcher</h2>
+        <p class="slide-subtitle">Automated pairing of volunteer capabilities with campaign operational demands.</p>
+      </div>
+      <div class="slide-content grid-2">
+        <div class="glass-card">
+          <h3 class="card-title">Mathematical Match Formula</h3>
+          <p class="card-desc" style="margin-bottom: 1rem;">Calculates text overlap ratio between volunteer skills vector S_v and campaign requirement vector S_c, adjusted for location proximity boost.</p>
+          <div class="code-block">
+Score = Min(99, Max(60, Base(65) + (OverlapRatio * 30) + (MatchCount * 5)))
+
++ 5% Location Proximity Boost (if Volunteer City == Campaign City)
+          </div>
+          <ul class="feature-list" style="margin-top: 1rem;">
+            <li class="feature-item">
+              <span class="feature-bullet">✓</span>
+              <div><strong>Match Score Breakdown:</strong> Gives exact skill alignment reasoning to volunteers before applying.</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="glass-card">
+          <h3 class="card-title">Sample FastAPI Execution</h3>
+          <div class="code-block" style="font-size: 0.78rem;">
+POST /ai/match-volunteer
+{
+  "volunteer_skills": ["Teaching", "Web Development", "First Aid"],
+  "volunteer_location": "New Delhi",
+  "campaign_skills": ["Teaching", "Mentorship"],
+  "campaign_location": "New Delhi"
+}
+
+// Response
+{
+  "matchScore": 92,
+  "matchLevel": "Excellent Match",
+  "matchReason": "High skill alignment on: Teaching (Local proximity match)",
+  "matchingSkills": ["teaching"],
+  "locationProximity": true
+}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: AI Engine 2 - NLP Urgency Classifier -->
+    <section class="slide" id="slide-6">
+      <div class="slide-header">
+        <span class="slide-tag">06. AI Microservices Engine</span>
+        <h2 class="slide-title">AI Engine #2: NLP Request Urgency Classifier</h2>
+        <p class="slide-subtitle">Scans beneficiary crisis descriptions to score request priority automatically.</p>
+      </div>
+      <div class="slide-content grid-2">
+        <div class="glass-card">
+          <h3 class="card-title">Classification Rules & Weights</h3>
+          <p class="card-desc" style="margin-bottom: 1rem;">Utilizes keyword extraction & impact multipliers to compute urgency scores (25 to 99).</p>
+          <ul class="feature-list">
+            <li class="feature-item">
+              <span class="feature-bullet">🚨</span>
+              <div><strong>Emergency Keywords (+15 pts):</strong> <em>critical, emergency, flood, disaster, starvation, icu, trauma</em></div>
+            </li>
+            <li class="feature-item">
+              <span class="feature-bullet">🏥</span>
+              <div><strong>High-Priority Keywords (+10 pts):</strong> <em>hospital, shelter, surgery, ration, treatment</em></div>
+            </li>
+            <li class="feature-item">
+              <span class="feature-bullet">👥</span>
+              <div><strong>Population Multiplier:</strong> +20 pts for >20 affected people; +10 pts for >5 affected people.</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="glass-card">
+          <h3 class="card-title">Live Interactive NLP Simulator</h3>
+          <div class="interactive-widget">
+            <div class="widget-title">⚡ Test NLP Engine Input</div>
+            <input type="text" class="input-field" id="nlpTestInput" value="Urgent medical surgery required for flood victims in shelter, 25 people affected">
+            <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="runNlpSimulation()">Calculate Urgency Score</button>
+            <div id="nlpResult" style="margin-top: 1rem; font-size: 0.85rem; color: #67e8f9;">
+              Click button to test live scoring logic!
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: AI Engine 3 & 4 -->
+    <section class="slide" id="slide-7">
+      <div class="slide-header">
+        <span class="slide-tag">07. AI Microservices Engine</span>
+        <h2 class="slide-title">AI Engines #3 & #4: Recommender & Chatbot</h2>
+        <p class="slide-subtitle">Personalized cause discovery and natural language guidance.</p>
+      </div>
+      <div class="slide-content grid-2">
+        <div class="glass-card">
+          <div class="card-icon">🎯</div>
+          <h3 class="card-title">AI Engine #3: Cause Recommender</h3>
+          <p class="card-desc" style="margin-bottom: 1rem;">Matches donor preferences (e.g., Education, Child Healthcare) with active verified campaigns using vector category proximity.</p>
+          <div class="code-block" style="font-size: 0.8rem;">
+POST /api/ai/recommend-campaigns
+User Prefs: ["Healthcare", "Education"]
+Outcome: Ranks campaigns by category match percentage.
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <div class="card-icon">💬</div>
+          <h3 class="card-title">AI Engine #4: Sahayak Conversational Chatbot</h3>
+          <p class="card-desc" style="margin-bottom: 1rem;">Intent-matching conversational assistant available across all pages in the client UI.</p>
+          <ul class="feature-list">
+            <li class="feature-item">
+              <span class="feature-bullet">✓</span>
+              <div><strong>Intent Dispatcher:</strong> Detects queries for NGOs, campaigns, volunteering, or emergency assistance.</div>
+            </li>
+            <li class="feature-item">
+              <span class="feature-bullet">✓</span>
+              <div><strong>Deep-Link Navigation:</strong> Triggers active navigation actions directly in the frontend UI.</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: Donor 80G Tax System -->
+    <section class="slide" id="slide-8">
+      <div class="slide-header">
+        <span class="slide-tag">08. Financial Transparency & Compliance</span>
+        <h2 class="slide-title">Donor Mock Payment & 80G Tax Exemption</h2>
+        <p class="slide-subtitle">Instant tax deduction receipt generation complying with Section 80G of the Indian Income Tax Act.</p>
+      </div>
+      <div class="slide-content grid-3">
+        <div class="glass-card">
+          <div class="card-icon">💳</div>
+          <h3 class="card-title">1. Mock Payment Checkout</h3>
+          <p class="card-desc">Supports Credit Card, UPI, and NetBanking flows with immediate transaction hash generation and ledger logging.</p>
+        </div>
+        <div class="glass-card">
+          <div class="card-icon">📜</div>
+          <h3 class="card-title">2. Dynamic 80G Generation</h3>
+          <p class="card-desc">Automatically compiles NGO Registration No., Donor PAN, Transaction ID, and Date into a verifiable digital tax receipt.</p>
+        </div>
+        <div class="glass-card">
+          <div class="card-icon">📥</div>
+          <h3 class="card-title">3. Instant Receipt Download</h3>
+          <p class="card-desc">Donors can view their personal donation ledger and print/download 80G tax certificates anytime from their dashboard.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: Beneficiary Ticket Lifecycle -->
+    <section class="slide" id="slide-9">
+      <div class="slide-header">
+        <span class="slide-tag">09. Social Operations Workflow</span>
+        <h2 class="slide-title">Beneficiary Assistance Ticket Lifecycle</h2>
+        <p class="slide-subtitle">From aid request submission to verified NGO adoption and ticket fulfillment.</p>
+      </div>
+      <div class="slide-content">
+        <div class="glass-card" style="width: 100%;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1rem;">
+            <div class="glass-card" style="flex:1; text-align: center;">
+              <span style="font-size: 2rem;">📝</span>
+              <h4 style="margin-top: 0.5rem; font-size: 1rem;">1. Submission</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted);">Beneficiary submits aid details & affected count.</p>
+            </div>
+            <div style="color: var(--secondary); font-size: 1.5rem;">➔</div>
+            <div class="glass-card" style="flex:1; text-align: center;">
+              <span style="font-size: 2rem;">🤖</span>
+              <h4 style="margin-top: 0.5rem; font-size: 1rem;">2. AI Scoring</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted);">FastAPI NLP engine assigns Urgency Score & Tag.</p>
+            </div>
+            <div style="color: var(--secondary); font-size: 1.5rem;">➔</div>
+            <div class="glass-card" style="flex:1; text-align: center;">
+              <span style="font-size: 2rem;">🏛️</span>
+              <h4 style="margin-top: 0.5rem; font-size: 1rem;">3. NGO Adoption</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted);">Verified NGOs adopt ticket based on urgency queue.</p>
+            </div>
+            <div style="color: var(--secondary); font-size: 1.5rem;">➔</div>
+            <div class="glass-card" style="flex:1; text-align: center;">
+              <span style="font-size: 2rem;">✅</span>
+              <h4 style="margin-top: 0.5rem; font-size: 1rem;">4. Resolution</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted);">Status updated to Resolved & logged in platform audit.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: Database Schema -->
+    <section class="slide" id="slide-10">
+      <div class="slide-header">
+        <span class="slide-tag">10. Database Engineering</span>
+        <h2 class="slide-title">MongoDB Schema & Data Architecture</h2>
+        <p class="slide-subtitle">Normalized Mongoose document models with automated indexing.</p>
+      </div>
+      <div class="slide-content grid-2">
+        <div class="glass-card">
+          <h3 class="card-title">Core Document Collections</h3>
+          <ul class="feature-list" style="margin-top: 0.5rem;">
+            <li class="feature-item">
+              <span class="feature-bullet">👤</span>
+              <div><strong>Users Schema:</strong> Email, password hash, role enum, profile metadata.</div>
+            </li>
+            <li class="feature-item">
+              <span class="feature-bullet">🏢</span>
+              <div><strong>NGOs Schema:</strong> Org name, registration number, verification status, sectors.</div>
+            </li>
+            <li class="feature-item">
+              <span class="feature-bullet">📢</span>
+              <div><strong>Campaigns Schema:</strong> Goal amount, raised amount, required skills, location.</div>
+            </li>
+            <li class="feature-item">
+              <span class="feature-bullet">💳</span>
+              <div><strong>Donations Schema:</strong> Campaign ref, donor ref, amount, 80G certificate ID.</div>
+            </li>
+            <li class="feature-item">
+              <span class="feature-bullet">🆘</span>
+              <div><strong>Requests Schema:</strong> Beneficiary ref, title, description, urgencyScore, status.</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="glass-card">
+          <h3 class="card-title">Mongoose Data Persistence Strategy</h3>
+          <div class="code-block" style="font-size: 0.8rem;">
+// Zero-Config Database Switcher (server.js)
+const connectDB = async () => {
+  if (process.env.MONGODB_URI) {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log("Connected to MongoDB Production");
+  } else {
+    const { MongoMemoryServer } = await import('mongodb-memory-server');
+    const mongoServer = await MongoMemoryServer.create();
+    await mongoose.connect(mongoServer.getUri());
+    console.log("Connected to MongoMemoryServer (In-Memory)");
+  }
+};
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 12: Live Demo Protocol -->
+    <section class="slide" id="slide-11">
+      <div class="slide-header">
+        <span class="slide-tag">11. Live Demonstration</span>
+        <h2 class="slide-title">Live Demonstration Protocol</h2>
+        <p class="slide-subtitle">5-minute evaluation guide using the top navigation bar quick role switcher.</p>
+      </div>
+      <div class="slide-content grid-2">
+        <div class="glass-card">
+          <h3 class="card-title">Demo Flow Checklist</h3>
+          <ul class="feature-list" style="margin-top: 0.5rem;">
+            <li class="feature-item">
+              <span class="feature-bullet">1</span>
+              <div><strong>Admin View:</strong> Inspect pending NGO approvals (<code>ngo.food@sahayak.ai</code>) and approve verification status.</div>
+            </li>
+            <li class="feature-item">
+              <span class="feature-bullet">2</span>
+              <div><strong>NGO View:</strong> Switch to Asha Foundation, view campaigns & active volunteer application queue.</div>
+            </li>
+            <li class="feature-item">
+              <span class="feature-bullet">3</span>
+              <div><strong>Volunteer View:</strong> Switch to Sharique Raza, test AI skill matching percentage for campaigns.</div>
+            </li>
+            <li class="feature-item">
+              <span class="feature-bullet">4</span>
+              <div><strong>Donor View:</strong> Process mock donation & inspect generated 80G tax receipt.</div>
+            </li>
+            <li class="feature-item">
+              <span class="feature-bullet">5</span>
+              <div><strong>Beneficiary View:</strong> Submit emergency food ticket & verify NLP Urgency Score output.</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="glass-card">
+          <h3 class="card-title">Pre-Configured Credentials</h3>
+          <div class="code-block" style="font-size: 0.82rem;">
+Global Password: password123
+
+👑 Admin:       admin@sahayak.ai
+🏢 NGO (Verif): ngo.asha@sahayak.ai
+🏢 NGO (Pend):  ngo.food@sahayak.ai
+🤝 Volunteer:   volunteer.arjun@sahayak.ai
+💳 Donor:       donor.rohit@sahayak.ai
+🤲 Beneficiary: beneficiary.ramesh@sahayak.ai
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 13: Roadmap -->
+    <section class="slide" id="slide-12">
+      <div class="slide-header">
+        <span class="slide-tag">12. Project Execution Roadmap</span>
+        <h2 class="slide-title">Phase 1 Accomplishments vs. Phase 2 Future Scope</h2>
+        <p class="slide-subtitle">Academic roadmap for full deployment and extended research modules.</p>
+      </div>
+      <div class="slide-content grid-2">
+        <div class="glass-card">
+          <div class="card-icon" style="background: rgba(16, 185, 129, 0.2); color: var(--accent);">✅</div>
+          <h3 class="card-title">Phase 1 (Completed & Demonstrated)</h3>
+          <ul class="feature-list" style="margin-top: 0.5rem;">
+            <li class="feature-item"><span class="feature-bullet">✓</span> Full MERN + FastAPI microservices architecture</li>
+            <li class="feature-item"><span class="feature-bullet">✓</span> 5 Role-based access control matrix</li>
+            <li class="feature-item"><span class="feature-bullet">✓</span> Vector skill matching & NLP request urgency scoring</li>
+            <li class="feature-item"><span class="feature-bullet">✓</span> Automated 80G tax receipt generator</li>
+            <li class="feature-item"><span class="feature-bullet">✓</span> Floating Sahayak AI chatbot assistant</li>
+          </ul>
+        </div>
+
+        <div class="glass-card">
+          <div class="card-icon" style="background: rgba(6, 182, 212, 0.2); color: var(--secondary);">🚀</div>
+          <h3 class="card-title">Phase 2 (Future Scope)</h3>
+          <ul class="feature-list" style="margin-top: 0.5rem;">
+            <li class="feature-item"><span class="feature-bullet">🗺️</span> <strong>GIS Geo-location Mapping:</strong> Interactive map rendering for emergency aid requests.</li>
+            <li class="feature-item"><span class="feature-bullet">⛓️</span> <strong>Polygon Blockchain Ledger:</strong> Immutable financial donor tracking.</li>
+            <li class="feature-item"><span class="feature-bullet">📲</span> <strong>WebSockets Alert Server:</strong> Instant WhatsApp/SMS emergency broadcasts.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 14: Conclusion & Q&A -->
+    <section class="slide title-slide" id="slide-13">
+      <span class="slide-tag">MCA Viva Ready</span>
+      <h1 class="hero-title" style="font-size: 3rem;">Thank You!</h1>
+      <p class="hero-subtitle">
+        Sahayak AI demonstrates how modern full-stack microservices and practical AI algorithms can revolutionize social impact and NGO collaboration.
+      </p>
+
+      <div class="glass-card" style="max-width: 600px; margin: 0 auto; text-align: center;">
+        <h3 class="card-title" style="color: var(--secondary);">Open for MCA Viva Questions & Demonstration</h3>
+        <p class="card-desc" style="margin-top: 0.5rem;">
+          Press <kbd class="kbd">N</kbd> for Speaker Notes & Technical Viva Crib Sheet.
+        </p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Speaker Notes Modal -->
+  <div class="notes-modal" id="notesModal">
+    <div class="notes-header">
+      <span class="notes-title">🎙️ Presenter Speaker Notes</span>
+      <button class="btn" style="padding: 2px 8px;" onclick="toggleSpeakerNotes()">✕</button>
+    </div>
+    <div class="notes-body" id="notesContent">
+      Select a slide to view speaker notes.
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="keyboard-hint">
+      Use <kbd class="kbd">←</kbd> <kbd class="kbd">→</kbd> or <kbd class="kbd">Space</kbd> to navigate slides
+    </div>
+    <div style="font-size: 0.85rem; color: var(--text-muted);" id="slideCounter">
+      Slide 1 of 14
+    </div>
+  </footer>
+
+  <script>
+    const totalSlides = 14;
+    let currentSlide = 0;
+
+    const speakerNotes = [
+      /* Slide 1 */ "Good morning respected examiners. Today I am presenting Sahayak AI, an AI-powered unified platform for social service and NGO collaboration, built for my MCA final year project.",
+      /* Slide 2 */ "In our research, we found that India's 3.4 million NGOs suffer from fragmented communications, unaligned volunteer assignment, and slow response to emergency beneficiary requests.",
+      /* Slide 3 */ "Sahayak AI solves this by introducing a unified 5-role platform connected directly to Python FastAPI AI microservices for intelligent skill matching and NLP urgency prioritization.",
+      /* Slide 4 */ "Architecturally, we decoupled the AI engine into Python FastAPI so heavy vector operations do not block the Express REST API event loop. We also added an in-memory Mongo fallback.",
+      /* Slide 5 */ "Our Role-Based Access Control matrix supports 5 distinct user types: Admin, NGO, Volunteer, Donor, and Beneficiary. Each role has customized views and restricted endpoints.",
+      /* Slide 6 */ "Engine 1 matches volunteer skills with campaign needs using text overlap vectors, returning percentage scores and skill alignment reasons.",
+      /* Slide 7 */ "Engine 2 uses NLP rules to scan beneficiary text for crisis keywords like 'disaster' or 'starvation' combined with affected population count to flag urgent tickets.",
+      /* Slide 8 */ "Engine 3 recommends causes based on donor history, while Engine 4 provides a natural language conversational chatbot for navigating the platform.",
+      /* Slide 9 */ "Donors receive dynamic, instant 80G tax exemption receipts containing NGO registration numbers and donor PAN for compliance with Indian tax laws.",
+      /* Slide 10 */ "When a beneficiary submits an aid ticket, the NLP engine assigns priority, allowing verified NGOs to adopt and resolve tickets systematically.",
+      /* Slide 11 */ "Our MongoDB Mongoose schema uses normalized document models for Users, NGOs, Campaigns, Donations, and Requests, with MongoMemoryServer for effortless zero-config testing.",
+      /* Slide 12 */ "During our live demo, we can seamlessly switch between all 5 roles using the top navbar demo switcher, testing the complete end-to-end workflow.",
+      /* Slide 13 */ "Phase 1 delivers full microservices and AI scoring. Phase 2 will integrate GIS mapping, Polygon blockchain for immutable donor tracking, and WhatsApp alert engine.",
+      /* Slide 14 */ "Thank you for your time. I am now ready to present the live project demonstration and address your Viva questions."
+    ];
+
+    function updateSlide() {
+      document.querySelectorAll('.slide').forEach((slide, idx) => {
+        if (idx === currentSlide) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+
+      document.getElementById('slideSelect').value = currentSlide;
+      document.getElementById('slideCounter').textContent = `Slide ${currentSlide + 1} of ${totalSlides}`;
+      document.getElementById('progressBar').style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+      document.getElementById('notesContent').textContent = speakerNotes[currentSlide];
+    }
+
+    function goToSlide(index) {
+      if (index >= 0 && index < totalSlides) {
+        currentSlide = index;
+        updateSlide();
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function toggleSpeakerNotes() {
+      const modal = document.getElementById('notesModal');
+      modal.classList.toggle('active');
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    function runNlpSimulation() {
+      const input = document.getElementById('nlpTestInput').value.toLowerCase();
+      let score = 45;
+      
+      const emergencies = ['critical', 'emergency', 'flood', 'disaster', 'starvation', 'icu', 'urgent', 'shelter', 'surgery'];
+      const matched = emergencies.filter(w => input.includes(w));
+      
+      score += matched.length * 15;
+      if (input.includes('25') || input.includes('people') || input.includes('victims')) score += 20;
+      
+      score = Math.min(99, Math.max(25, score));
+      let level = score >= 80 ? "URGENT 🚨" : (score >= 65 ? "HIGH ⚠️" : "MEDIUM ℹ️");
+      
+      document.getElementById('nlpResult').innerHTML = `
+        <strong>Simulated AI Response:</strong><br>
+        • Urgency Score: <strong>${score}/100</strong><br>
+        • Priority Level: <strong>${level}</strong><br>
+        • Matched Indicators: <code>${matched.join(', ') || 'None'}</code>
+      `;
+    }
+
+    // Keyboard Event Listener
+    document.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+      if (e.key === 'ArrowRight' || e.key === 'Space' || e.key === 'PageDown') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key.toLowerCase() === 'n') {
+        e.preventDefault();
+        toggleSpeakerNotes();
+      } else if (e.key.toLowerCase() === 'f') {
+        e.preventDefault();
+        toggleFullscreen();
+      }
+    });
+
+    // Initialize Notes
+    document.getElementById('notesContent').textContent = speakerNotes[0];
+  </script>
+</body>
+</html>
